@@ -1,8 +1,13 @@
-2026-07-14 01:18:41.990 | INFO     | main.lifespan:24 | Starting application
-2026-07-14 01:18:42.029 | INFO     | database.init_database:75 | Database tables initialized successfully
-2026-07-14 01:18:42.029 | INFO     | main.lifespan:27 | Application startup completed
-2026-07-14 01:26:45.057 | INFO     | websocket_manager.websocket_endpoint:20 | WebSocket client connected
-2026-07-14 01:26:45.059 | WARNING  | websocket_manager.websocket_endpoint:35 | Invalid event payload over websocket: 4 validation errors for EventRequest
+2026-07-14 23:27:23.701 | INFO     | main.lifespan:25 | Starting application
+2026-07-14 23:27:23.714 | CRITICAL | database.init_database:77 | Database initialization failed: (sqlite3.OperationalError) unable to open database file
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-07-14 23:27:23.715 | CRITICAL | main.lifespan:30 | Startup failed: (sqlite3.OperationalError) unable to open database file
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-07-14 23:28:42.512 | INFO     | main.lifespan:25 | Starting application
+2026-07-14 23:28:42.562 | INFO     | database.init_database:75 | Database tables initialized successfully
+2026-07-14 23:28:42.563 | INFO     | main.lifespan:28 | Application startup completed
+2026-07-14 23:49:05.098 | INFO     | websocket_manager.websocket_endpoint:20 | WebSocket client connected
+2026-07-14 23:49:05.106 | WARNING  | websocket_manager.websocket_endpoint:35 | Invalid event payload over websocket: 4 validation errors for EventRequest
 event_id
   Field required [type=missing, input_value={'source': 'chrome_extens...500 registration fee'}, input_type=dict]
     For further information visit https://errors.pydantic.dev/2.13/v/missing
@@ -15,31 +20,8 @@ timestamp
 source_app
   Field required [type=missing, input_value={'source': 'chrome_extens...500 registration fee'}, input_type=dict]
     For further information visit https://errors.pydantic.dev/2.13/v/missing
-2026-07-14 01:26:45.060 | INFO     | websocket_manager.websocket_endpoint:55 | Disconnected
-2026-07-14 01:32:16.985 | INFO     | event_processor.process_event:38 | Processed event LINK_CLICKED for session session-001
-2026-07-14 01:44:20.925 | INFO     | risk.get_risk_score:76 | Risk assessment for session session-001: 0/LOW (rules: [])
-2026-07-14 01:44:47.163 | INFO     | main.lifespan:34 | Shutting down application
-2026-07-14 01:44:52.293 | INFO     | main.lifespan:24 | Starting application
-2026-07-14 01:44:52.297 | INFO     | database.init_database:75 | Database tables initialized successfully
-2026-07-14 01:44:52.297 | INFO     | main.lifespan:27 | Application startup completed
-2026-07-14 01:45:28.087 | INFO     | event_processor.process_event:38 | Processed event string for session string
-2026-07-14 01:46:02.759 | ERROR    | event_processor.process_event:51 | Event processing failed: (sqlite3.IntegrityError) UNIQUE constraint failed: events.id
-[SQL: INSERT INTO events (id, session_id, event_type, source_app, timestamp, payload) VALUES (?, ?, ?, ?, ?, ?) RETURNING created_at]
-[parameters: ('string', 'string', 'string', 'string', '2026-07-12 20:15:12.518000', '{"additionalProp1": {}}')]
-(Background on this error at: https://sqlalche.me/e/20/gkpj)
-2026-07-14 01:46:29.778 | INFO     | risk.get_risk_score:76 | Risk assessment for session session-001: 0/LOW (rules: [])
-2026-07-14 01:46:42.199 | INFO     | risk.get_risk_score:76 | Risk assessment for session session-001: 0/LOW (rules: [])
-2026-07-14 01:56:13.791 | INFO     | main.lifespan:34 | Shutting down application
-2026-07-14 01:56:14.896 | INFO     | main.lifespan:25 | Starting application
-2026-07-14 01:56:14.898 | INFO     | database.init_database:75 | Database tables initialized successfully
-2026-07-14 01:56:14.898 | INFO     | main.lifespan:28 | Application startup completed
-2026-07-14 01:56:23.468 | INFO     | main.lifespan:35 | Shutting down application
-2026-07-14 02:02:09.194 | INFO     | main.lifespan:25 | Starting application
-2026-07-14 02:02:09.251 | INFO     | database.init_database:75 | Database tables initialized successfully
-2026-07-14 02:02:09.251 | INFO     | main.lifespan:28 | Application startup completed
-2026-07-14 02:03:19.812 | INFO     | event_processor.process_event:38 | Processed event SCREEN_SHARE for session session-001
-2026-07-14 02:04:26.414 | ERROR    | event_processor.process_event:51 | Event processing failed: (sqlite3.IntegrityError) UNIQUE constraint failed: events.id
-[SQL: INSERT INTO events (id, session_id, event_type, source_app, timestamp, payload) VALUES (?, ?, ?, ?, ?, ?) RETURNING created_at]
-[parameters: ('evt-002', 'session-001', 'SCREEN_SHARE', 'AnyDesk', '2026-07-13 20:30:00.000000', '{"screen_share": true}')]
-(Background on this error at: https://sqlalche.me/e/20/gkpj)
-2026-07-14 02:04:58.266 | INFO     | main.lifespan:35 | Shutting down application
+2026-07-14 23:49:05.107 | INFO     | websocket_manager.websocket_endpoint:55 | Disconnected
+2026-07-14 23:49:30.269 | INFO     | websocket_manager.websocket_endpoint:20 | WebSocket client connected
+2026-07-14 23:49:30.299 | INFO     | event_processor.process_event:43 | Processed event WEBSITE_OPENED for session ABC123
+2026-07-14 23:49:35.011 | WARNING  | event_processor.process_event:89 | Correlation engine update failed: [WinError 10061] No connection could be made because the target machine actively refused it
+2026-07-14 23:49:35.018 | INFO     | websocket_manager.websocket_endpoint:55 | Disconnected

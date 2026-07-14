@@ -8,6 +8,7 @@ from app.schemas.event_schema import EventRequest, EventResponse
 from app.models.event import Event
 from app.services.correlation_engine import CorrelationEngine
 from app.services.risk_engine import RiskEngine
+from app.services.website_analyzer import WebsiteAnalyzer
 from app.models.risk_assessment import RiskAssessment
 from app.repositories.risk_repository import RiskRepository
 
@@ -47,7 +48,7 @@ class EventProcessor:
                 if not hasattr(self, "_correlation_engine"):
                     # initialize once per EventProcessor instance
                     self._correlation_engine = CorrelationEngine(
-                        website_analyzer=None,
+                        website_analyzer=WebsiteAnalyzer(),
                         risk_engine=RiskEngine(),
                         warning_service=None,
                     )

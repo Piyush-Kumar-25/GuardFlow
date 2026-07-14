@@ -14,12 +14,16 @@ async def test():
             print("✅ Connected to server")
 
             sample = {
-                "source": "chrome_extension",
-                "event": "website_opened",
+                "event_id": "evt-001",
                 "session_id": "ABC123",
-                "url": "https://fake-scholarship.xyz",
-                "title": "Scholarship Portal",
-                "text": "Pay ₹500 registration fee"
+                "event_type": "WEBSITE_OPENED",
+                "timestamp": "2026-07-14T00:00:00Z",
+                "source_app": "chrome_extension",
+                "payload": {
+                    "url": "https://fake-scholarship.xyz",
+                    "title": "Scholarship Portal",
+                    "text": "Pay ₹500 registration fee"
+                }
             }
 
             await websocket.send(json.dumps(sample))

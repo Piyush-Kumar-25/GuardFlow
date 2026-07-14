@@ -7,7 +7,7 @@ from app.models.risk_assessment import RiskAssessment
 from app.repositories.event_repository import EventRepository
 from app.repositories.risk_repository import RiskRepository
 from app.schemas.risk_schema import RiskResponse
-from app.services.risk_engine import RuleEngine
+from app.services.risk_engine import RiskEngine
 
 # NOTE: no prefix here - main.py already mounts this router under "/api/v1".
 # The previous version set prefix="/api/v1" on both this router AND on the
@@ -20,7 +20,7 @@ router = APIRouter(
     },
 )
 
-_rule_engine = RuleEngine()
+_rule_engine = RiskEngine()
 
 
 @router.post(
@@ -61,27 +61,56 @@ def get_risk_score(
             detail="No events found for this session",
         )
 
-    result = _rule_engine.evaluate(events)
+    website_risk = None
+    payment_data = {}
+    receiver_data = {}
+    behaviour_data = {"event_count": len(events), "anomalies": 0}
+
+    for event in events:
+        event_type = (event.event_type or "").upper()
+        if event_type == "WEBSITE_OPENED":
+            website_risk = event.payload.get("website_risk")
+        elif event_type == "PAYMENT_STARTED":
+            payment_data = {
+                "amount": event.payload.get("amount"),
+                "status": "started",
+                "receiver": {"name": event.payload.get("receiver")},
+            }
+            receiver_data = payment_data["receiver"]
+        elif event_type == "PAYMENT_COMPLETED":
+            payment_data = {
+                "amount": event.payload.get("amount"),
+                "status": "completed",
+                "receiver": {"name": event.payload.get("receiver")},
+            }
+            receiver_data = payment_data["receiver"]
+
+    result = _rule_engine.calculate_risk(
+        website_risk=website_risk,
+        payment_risk_or_data=payment_data,
+        receiver_risk_or_data=receiver_data,
+        behaviour_risk_or_data=behaviour_data,
+    )
 
     assessment = RiskAssessment(
         session_id=session_id,
-        score=result.score,
-        level=result.level,
-        confidence=result.confidence,
-        triggered_rules=result.triggered_rules,
-        requires_physical_confirmation=result.requires_physical_confirmation,
+        score=result["overall_score"],
+        level=result["risk_level"],
+        confidence=result["confidence"],
+        triggered_rules=result["reasons"],
+        requires_physical_confirmation=result["requires_physical_confirmation"],
     )
     RiskRepository(db).save(assessment)
 
     logger.info(
         f"Risk assessment for session {session_id}: "
-        f"{result.score}/{result.level} (rules: {result.triggered_rules})"
+        f"{result['overall_score']}/{result['risk_level']} (reasons: {result['reasons']})"
     )
 
     return RiskResponse(
-        score=result.score,
-        level=result.level,
-        confidence=result.confidence,
-        triggered_rules=result.triggered_rules,
-        requires_physical_confirmation=result.requires_physical_confirmation,
+        score=result["overall_score"],
+        level=result["risk_level"],
+        confidence=result["confidence"],
+        triggered_rules=result["reasons"],
+        requires_physical_confirmation=result["requires_physical_confirmation"],
     )
